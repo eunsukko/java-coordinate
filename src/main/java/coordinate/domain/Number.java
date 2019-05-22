@@ -1,5 +1,7 @@
 package coordinate.domain;
 
+import coordinate.messageConstants.MessageConstants;
+
 import java.util.Objects;
 
 public class Number {
@@ -8,11 +10,15 @@ public class Number {
 
     private final int number;
 
-    public Number(int number) {
-        if (number > 24 || number < 0) {
-            throw new IllegalArgumentException("error");
+    private Number(int number) {
+        if (!(MIN_NUM <= number && number <= MAX_NUM)) {
+            throw new IllegalArgumentException(MessageConstants.ERROR_OUT_OF_BOUND);
         }
         this.number = number;
+    }
+
+    public static Number create(int number) {
+        return new Number(number);
     }
 
     public int getNumber() {

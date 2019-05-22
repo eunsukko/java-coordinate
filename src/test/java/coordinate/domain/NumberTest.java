@@ -7,22 +7,19 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class NumberTest {
     @Test
-    void 생성자_() {}
-
-    @Test
     void 생성자_좌표가_24이상일때() {
-        assertThrows(IllegalArgumentException.class, () -> new Number(25));
+        assertThrows(IllegalArgumentException.class, () -> Number.create(5));
     }
 
     @Test
     void 생성자_좌표가_음수일때() {
-        assertThrows(IllegalArgumentException.class, () -> new Number(-1));
+        assertThrows(IllegalArgumentException.class, () -> Number.create(-1));
     }
 
     @Test
-    void 정상() {
-        Number point = new Number(10);
-        assertThat(point).isEqualTo(new Number(10));
+    void 생성자_좌표가_정상범위에_있을때() {
+        Number point = Number.create(10);
+        assertThat(point).isEqualTo(Number.create(10));
     }
 
 }

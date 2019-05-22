@@ -6,9 +6,21 @@ public class Vector2 {
     private final int x;
     private final int y;
 
-    public Vector2(int x, int y) {
+    private Vector2(int x, int y) {
         this.x = x;
         this.y = y;
+    }
+
+    public static Vector2 create(int x, int y) {
+        return new Vector2(x, y);
+    }
+
+    public double length() {
+        return Math.sqrt(x * x + y * y);
+    }
+
+    public Vector2 minus(Vector2 v) {
+        return new Vector2(x - v.x, y - v.y);
     }
 
     @Override
@@ -23,21 +35,5 @@ public class Vector2 {
     @Override
     public int hashCode() {
         return Objects.hash(x, y);
-    }
-
-    public int getX() {
-        return x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-//    public int pow() {
-//        return Math.pow(x,2);
-//    }
-
-    public Vector2 multiply(Vector2 a) {
-        return new Vector2(x * a.getX(), y * a.getY());
     }
 }

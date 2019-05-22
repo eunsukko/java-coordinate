@@ -1,25 +1,31 @@
 package coordinate.domain;
 
+import coordinate.messageConstants.MessageConstants;
+
 import java.util.Objects;
 
 public class Point {
     private final Number x;
     private final Number y;
 
-    public Point(Number x, Number y) {
-        if (x == null || y == null) {
-            throw new IllegalArgumentException("null 입력");
+    private Point(Number x, Number y) {
+        if (Objects.isNull(x) || Objects.isNull(y)) {
+            throw new IllegalArgumentException(MessageConstants.ERROR_NULL);
         }
         this.x = x;
         this.y = y;
     }
 
-    public Number getX() {
-        return x;
+    public static Point create(int x, int y) {
+        return new Point(Number.create(x), Number.create(y));
     }
 
-    public Number getY() {
-        return y;
+    public Vector2 getVector2() {
+        return Vector2.create(x.getNumber(), y.getNumber());
+    }
+
+    public Vector2 subtract(Point p2) {
+        return getVector2().minus(p2.getVector2());
     }
 
     @Override
@@ -34,9 +40,5 @@ public class Point {
     @Override
     public int hashCode() {
         return Objects.hash(x, y);
-    }
-
-    public Vector2 subtract(Point p2) {
-        return new Vector2(x.getNumber() - p2.getX().getNumber(), y.getNumber() - p2.getY().getNumber());
     }
 }

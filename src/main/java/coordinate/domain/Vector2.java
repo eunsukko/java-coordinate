@@ -23,6 +23,14 @@ public class Vector2 {
         return new Vector2(x - v.x, y - v.y);
     }
 
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

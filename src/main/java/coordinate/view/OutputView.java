@@ -1,9 +1,7 @@
 package coordinate.view;
 
 import coordinate.controller.CoordinateController;
-import coordinate.domain.Line;
-import coordinate.domain.Point;
-import coordinate.domain.Vector2;
+import coordinate.domain.*;
 import coordinate.messageConstants.MessageConstants;
 
 import java.util.ArrayList;
@@ -19,39 +17,29 @@ public class OutputView {
     private static final int HORIZON_START = LEN_DIGITS;
 
     public void run() {
-        List<Point> points = CoordinateController.getCoordinates();
+        PointList pointList = CoordinateController.getCoordinates();
 
-        printCoordinatesBoard(points);
+        printCoordinatesBoard(pointList);
 
-        printResult(new Line(points.get(0), points.get(1)));
+        ResultPrintable resultPrintable = ResultPrintableFactory.create(pointList.getPoints());
+        System.out.println(resultPrintable.getResultMessage());
     }
 
-    private void printResult(Line lines) {
-        System.out.printf(MessageConstants.LINE_RESULT_FORMAT, lines.length());
-    }
-
-    private void printCoordinatesBoard(List<Point> points) {
+    private void printCoordinatesBoard(PointList pointList) {
         List<List<Character>> board = initBoard();
 
         drawVerticalLine(board);
         drawHorizontalLine(board);
         drawZero(board);
 
-        drawPnts(board, points, '*');
+        drawPnts(board, pointList, '*');
 
         printBoard(board);
     }
 
     private List<List<Character>> initBoard() {
-//        List<Character> line = Stream.generate(() -> ' ')
-//                .limit(LEN_DIGITS * (2 + (MAX_NUM+1)))
-//                .collect(Collectors.toList());
-//
-//        return Stream.generate(() -> new ArrayList(line)).limit(1 + (MAX_NUM + 1)).collect(Collectors.toList());
-
-
         return Stream.generate(() -> Stream.generate(() -> ' ')
-                .limit(LEN_DIGITS * (2 + (MAX_NUM+1)))
+                .limit(LEN_DIGITS * (2 + (MAX_NUM + 1)))
                 .collect(Collectors.toList())).limit(1 + (MAX_NUM + 1)).collect(Collectors.toList());
     }
 
@@ -72,7 +60,7 @@ public class OutputView {
                 if (num == 0) {
                     break;
                 }
-                set(board, VERTICAL_START + r, i, (char)('0' + (num % 10)));
+                set(board, VERTICAL_START + r, i, (char) ('0' + (num % 10)));
             }
         }
     }
@@ -86,11 +74,11 @@ public class OutputView {
 
         for (int c = 2; c <= MAX_NUM; c += 2) {
             int num = c;
-            for (int i = LEN_DIGITS - 1; 0 <= i; i--,num /= 10) {
+            for (int i = LEN_DIGITS - 1; 0 <= i; i--, num /= 10) {
                 if (num == 0) {
                     break;
                 }
-                set(board, VERTICAL_START-1, HORIZON_START + (c * LEN_DIGITS)+i, (char)('0' + (num % 10)));
+                set(board, VERTICAL_START - 1, HORIZON_START + (c * LEN_DIGITS) + i, (char) ('0' + (num % 10)));
             }
         }
     }
@@ -100,8 +88,8 @@ public class OutputView {
         set(board, VERTICAL_START, HORIZON_START, '+');
     }
 
-    private void drawPnts(List<List<Character>> board, List<Point> points, char ch) {
-        for (Point point : points) {
+    private void drawPnts(List<List<Character>> board, PointList pointList, char ch) {
+        for (Point point : pointList.getPoints()) {
             Vector2 v = point.getVector2();
             set(board, VERTICAL_START + v.getY(), HORIZON_START + (LEN_DIGITS * v.getX()), ch);
         }
@@ -118,7 +106,6 @@ public class OutputView {
         }
         System.out.println();
     }
-
 
 
 }

@@ -1,6 +1,7 @@
 package coordinate.view;
 
 import coordinate.domain.Point;
+import coordinate.domain.PointList;
 import coordinate.messageConstants.MessageConstants;
 
 import java.util.ArrayList;
@@ -12,12 +13,12 @@ import java.util.stream.Collectors;
 public class InputView {
     private static final Scanner SCAN = new Scanner(System.in);
 
-    public List<Point> inputCoordinates() {
+    public PointList inputCoordinates() {
         System.out.println(MessageConstants.INPUT_COORDINATES);
         String input = SCAN.nextLine();
 
         try {
-            return inputToPoints(input);
+            return PointList.create(inputToPoints(input));
         } catch (IllegalArgumentException e) {
             System.err.println(e.getMessage());
             return inputCoordinates();
